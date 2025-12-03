@@ -96,7 +96,7 @@ class MeshDNE(object):
             self.Mesh = pcopy(self.Mesh)
             self.Mesh.vertices = implicitfair.smooth(self.Mesh.vertices, self.Mesh.faces, int(self.smoothit), float(self.smoothstep), self.vert_tri_dict)
             if self.Mesh.vertices == "!":
-                print "Cholesky error"
+                print("Cholesky error")
                 return "!"    
 
         # creation of array of vertices per edge
@@ -125,8 +125,8 @@ class MeshDNE(object):
         TV2 = array([self.vnormal[face[0]],self.vnormal[face[1]],self.vnormal[face[2]]])
         
         if array_equal(TV1[0], TV1[1]) or array_equal(TV1[0], TV1[2]) or array_equal(TV1[1], TV1[2]):
-            print "Warning: Duplicate vertices in polygon %s." % i
-            print "Ignoring this polygon for energy calculation, but editing surface to remove duplicate vertices prior to DNE calculation is encouraged."
+            print(f"Warning: Duplicate vertices in polygon {i}.")
+            print("Ignoring this polygon for energy calculation, but editing surface to remove duplicate vertices prior to DNE calculation is encouraged.")
             return [0,1]
 
         b1 = TV1[1] - TV1[0]

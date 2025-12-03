@@ -12,7 +12,7 @@ matplotlib.use('AGG')
 
 import warnings
 import matplotlib.pyplot as plt
-from StringIO import StringIO
+from io import BytesIO
 from numpy import sqrt, square, amin, amax, array, array_equal
 from numpy.linalg import det
 
@@ -101,13 +101,13 @@ class MeshRFI(object):
             
         ax.add_collection(polygons)
         
-        self.imgbuffer = StringIO()
+        self.imgbuffer = BytesIO()
         plt.savefig(self.imgbuffer,format='png')
     
-    def _get_2d_area(self): # Receives image plot from StringIO object and returns absolute area covered by mesh as projected on XY plane   
+    def _get_2d_area(self): # Receives image plot from BytesIO object and returns absolute area covered by mesh as projected on XY plane   
         """Derives 2D surface area of polygonal mesh projected on XY plane given a 2D raster plot and area-unit reference line."""
-        if isinstance(self.imgbuffer, StringIO) is not True:
-            raise TypeError("Non-StringIO object provided for imgbuffer.")
+        if isinstance(self.imgbuffer, BytesIO) is not True:
+            raise TypeError("Non-BytesIO object provided for imgbuffer.")
         
         self.imgbuffer.seek(0) # Rewind image buffer back to beginning to allow Image.open() to identify it
         img = Image.open(self.imgbuffer).getdata()  

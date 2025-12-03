@@ -177,13 +177,13 @@ class MainWidget(QtGui.QWidget):
         if not len(filepath):
             return
         
-        print "Opening file..."
+        print("Opening file...")
         filename = os.path.split(filepath)[1]
         self.openlabel.setText(filename)
         self.filename = filename
         self.TopoMesh = topomesh.TopoMesh(filepath)
         self.mayaviview = MayaviView(self.TopoMesh.mesh,1)
-        print "File open!"
+        print("File open!")
         
     def OpenDirDialog(self):
         """Method for selecting a directory for batch processing of .ply surface mesh files."""
@@ -193,7 +193,7 @@ class MainWidget(QtGui.QWidget):
         if not len(self.dirpath):
             return
         
-        print "Opening directory..."
+        print("Opening directory...")
         self.openlabel.setText(".."+self.dirpath[-20:])
         self.mayaviview = MayaviView(0,1)
            
@@ -218,56 +218,56 @@ class MainWidget(QtGui.QWidget):
         
         Connected to Process File Button."""     
         if not self.dnecheck.isChecked() and not self.rficheck.isChecked() and not self.opcrcheck.isChecked():
-            print "No topographic variables have been selected for analysis."    
+            print("No topographic variables have been selected for analysis.")    
         self.ProcessSurface()
         
         if self.dnecheck.isChecked():
-            print "\nDNE calculation details:"
+            print("\nDNE calculation details:")
             if self.TopoMesh.DNE == "!":
-                print "\nDNE could not be calculated due to cholesky factorization error."
+                print("\nDNE could not be calculated due to cholesky factorization error.")
             else:
                 if self.DNEOptionsWindow.outliervgroup.isChecked():
-                    print "\nPolygons removed as outliers:"
+                    print("\nPolygons removed as outliers:")
                     for face in self.TopoMesh.outlierfaces:
-                        print "Polygon: %s\tEnergy: %s\tArea %s" % (face[0], face[1], face[2])
+                        print("Polygon: %s\tEnergy: %s\tArea %s" % (face[0], face[1], face[2]))
                 if self.DNEOptionsWindow.dneconditioncontrolcheck.isChecked():
-                    print "\nPolygons removed for high matrix condition numbers:"
+                    print("\nPolygons removed for high matrix condition numbers:")
                     for face in self.TopoMesh.conditionfaces:
-                        print "Polygon: %s\tMatrix condition number: %s" % (face[0], face[1])
-                print "\nNumber of edge polygons ignored: %s" % len(self.TopoMesh.boundaryfaces)
+                        print("Polygon: %s\tMatrix condition number: %s" % (face[0], face[1]))
+                print("\nNumber of edge polygons ignored: %s" % len(self.TopoMesh.boundaryfaces))
         
-        print "\n--------------------"   
-        print "RESULTS"
-        print "File name: %s" % self.openlabel.text()
-        print "Mesh face number: %s" % self.TopoMesh.nface
+        print("\n--------------------")   
+        print("RESULTS")
+        print("File name: %s" % self.openlabel.text())
+        print("Mesh face number: %s" % self.TopoMesh.nface)
         if self.dnecheck.isChecked():
             if self.TopoMesh.DNE == "!":
-                print "\nError (Cholesky factorization error)"
+                print("\nError (Cholesky factorization error)")
             else:
-                print "\nDNE: %s" % self.TopoMesh.DNE
+                print("\nDNE: %s" % self.TopoMesh.DNE)
                 if self.DNEOptionsWindow.visvgroup.isChecked():
                     MayaviView.VisualizeDNE(self.mayaviview, self.TopoMesh.DNEscalars, self.DNEOptionsWindow.dnerelvischeck.isChecked(),
                                             float(self.DNEOptionsWindow.dneabsminval.text()), 
                                             float(self.DNEOptionsWindow.dneabsmaxval.text()))
         if self.rficheck.isChecked():
-            print "\nRFI: %s" % self.TopoMesh.RFI
-            print "Surface area: %s" % self.TopoMesh.surfarea
-            print "Outline area: %s" % self.TopoMesh.projarea           
+            print("\nRFI: %s" % self.TopoMesh.RFI)
+            print("Surface area: %s" % self.TopoMesh.surfarea)
+            print("Outline area: %s" % self.TopoMesh.projarea)           
         if self.opcrcheck.isChecked():
-            print "\nOPCR: %s" % self.TopoMesh.OPCR
-            print "OPC at each rotation: %s" % self.TopoMesh.OPClist
+            print("\nOPCR: %s" % self.TopoMesh.OPCR)
+            print("OPC at each rotation: %s" % self.TopoMesh.OPClist)
             if self.OPCROptionsWindow.visualizeopcrcheck.isChecked():
                 MayaviView.VisualizeOPCR(self.mayaviview, self.TopoMesh.OPCscalars, self.TopoMesh.nface)
-        print "--------------------"
+        print("--------------------")
         if self.OPCROptionsWindow.visualizeopcrcheck.isChecked() and self.DNEOptionsWindow.visvgroup.isChecked() and self.dnecheck.isChecked() and self.opcrcheck.isChecked():
-            print "DNE and OPCR visualization both requested. Defaulting to OPCR visualization."
+            print("DNE and OPCR visualization both requested. Defaulting to OPCR visualization.")
                 
     def CalcDir(self): 
         """Method for batch processing a directory of .ply surface mesh files.
         
         Connected to Process Directory button."""       
         if not self.dnecheck.isChecked() and not self.rficheck.isChecked() and not self.opcrcheck.isChecked():
-            print "No topographic variables have been selected for analysis."
+            print("No topographic variables have been selected for analysis.")
             return
       
         resultsfile = open(os.path.join(self.dirpath,'morphoresults.txt'),'w')
@@ -276,26 +276,26 @@ class MainWidget(QtGui.QWidget):
         for filename in os.listdir(self.dirpath):
             if filename[-3:] == "ply":
                 self.filename = filename
-                print "Processing " + filename + "..."
+                print("Processing " + filename + "...")
                 self.TopoMesh = topomesh.TopoMesh(os.path.join(self.dirpath,filename))
                 self.ProcessSurface()
                 resultsfile.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (filename, self.TopoMesh.nface, self.TopoMesh.DNE, 
                                                                     self.TopoMesh.RFI, self.TopoMesh.surfarea, 
                                                                     self.TopoMesh.projarea, self.TopoMesh.OPCR))
-                print "\n--------------------\n"
+                print("\n--------------------\n")
             else:
-                print filename + "does not have a .ply extension, skipping to next file."
+                print(filename + "does not have a .ply extension, skipping to next file.")
         resultsfile.close()
         
     def fair_file(self):
-        print "Implicit fairing " + self.filename + "..."
+        print("Implicit fairing " + self.filename + "...")
         self.fair_mesh(self.filepath)
         self.mayaviview.VisualizeMesh(self.TopoMesh.mesh, 1)
         
     def fair_directory(self):
         for filename in os.listdir(self.dirpath):
             if filename[-3:] == "ply":
-                print "Implicit fairing " + filename + "..."
+                print("Implicit fairing " + filename + "...")
                 self.TopoMesh = topomesh.TopoMesh(os.path.join(self.dirpath,filename))
                 self.fair_mesh(os.path.join(self.dirpath,filename))
     

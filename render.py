@@ -17,7 +17,7 @@ import matplotlib
 matplotlib.use('AGG')
 
 import matplotlib.pyplot as plt
-from StringIO import StringIO
+from io import BytesIO
 from numpy import array,amax,amin,square
 
 try:
@@ -35,13 +35,13 @@ def areafromrender(linelength, strbuffer): # Receives image plot from StringIO o
     redpixie = countpixels(img, [(255,0,0,255),(255,127,127,255)])
     
     bluepixie = len(list(img)) - countpixels(img, [(255, 0, 0, 255), (255, 255, 255, 255), (255, 155, 155, 255), (255, 188, 188, 255), (255, 230, 230, 255), (255, 205, 205, 255)])  
-    print "blue pixels = " + str(bluepixie)    
+    print("blue pixels = " + str(bluepixie))    
         
     rope = float(linelength)
-    print "line = " + str(rope)
+    print("line = " + str(rope))
 
     redballoon = float(redpixie)
-    print "red pixels = " + str(redballoon)    
+    print("red pixels = " + str(redballoon))    
     
     # This is a very verbose explanation of the returned value
     #pixel_length_ratio = float(red_balloons/line)
@@ -82,7 +82,7 @@ def plotmeshoutline(mesh): # Returns pixel length of scalebar and image plot as 
         
     ax.add_collection(polygons)
     
-    imgbuffer = StringIO()
+    imgbuffer = BytesIO()
     plt.savefig(imgbuffer,format='png')
     return linelength, imgbuffer
 

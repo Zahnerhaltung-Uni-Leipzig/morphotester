@@ -93,7 +93,7 @@ class MeshOPCR(object):
         color_map[flatfaces] = '#000000'
             
         pairdict = defaultdict(list) #lists per vertex all possible pairs of polygons that include that vertex 
-        for vertex, faces in self.vert_tri_dict.iteritems():
+        for vertex, faces in self.vert_tri_dict.items():
             pairdict[vertex] = self._pair_faces(faces)
             
         adjacent_face_pairs = self._adjacent_face_pairs(pairdict)    
@@ -164,7 +164,7 @@ class MeshOPCR(object):
                 if pair in seen:
                     touching_list.append(pair)
                     if pair in seentwice:
-                        print "WARNING: POSSIBLE IDENTICAL TRIANGLES AT ", pair
+                        print("WARNING: POSSIBLE IDENTICAL TRIANGLES AT ", pair)
                     else:
                         seentwice.add(pair)
                 else:
