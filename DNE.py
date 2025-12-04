@@ -225,7 +225,8 @@ class MeshDNE(object):
         nonzeroarray = transpose(nonzero(M))
         
         for entry in nonzeroarray:
-            self.edgeverts[M[entry[0],entry[1]]-1] = [entry[0],entry[1]]
+            idx = int(M[entry[0],entry[1]]) - 1
+            self.edgeverts[idx] = [entry[0],entry[1]]
     
     def _get_boundary_faces(self):
         """Generates list of polygons comprising surface edges."""        
