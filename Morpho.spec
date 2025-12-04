@@ -6,6 +6,7 @@ from PyInstaller.utils.hooks import collect_submodules, collect_data_files, copy
 hiddenimports = collect_submodules('traitsui.qt')
 hiddenimports += collect_submodules('pyface.qt')
 hiddenimports += collect_submodules('pyface.ui.qt')
+hiddenimports += collect_submodules('pyface.timer')
 hiddenimports += collect_submodules('tvtk')
 hiddenimports += collect_submodules('mayavi')
 
@@ -14,6 +15,9 @@ datas = copy_metadata('traitsui')
 datas += copy_metadata('pyface')
 datas += copy_metadata('mayavi')
 datas += copy_metadata('traits')
+
+# Collect tvtk_classes data files (required for TVTK to work)
+datas += collect_data_files('tvtk')
 
 a = Analysis(
     ['Morpho.py'],
@@ -51,20 +55,28 @@ pyz = PYZ(a.pure)
 exe = EXE(
     pyz,
     a.scripts,
-    a.binaries,
-    a.datas,
     [],
+    exclude_binaries=True,
     name='Morpho',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
     upx_exclude=[],
-    runtime_tmpdir=None,
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+)
+
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='Morpho',
 )
