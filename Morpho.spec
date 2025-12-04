@@ -43,6 +43,12 @@ a = Analysis(
         'vtkmodules.util',
         'vtkmodules.util.colors',
         'vtkmodules.util.numpy_support',
+        'vtkmodules.numpy_interface',
+        'vtkmodules.numpy_interface.algorithms',
+        'vtkmodules.numpy_interface.dataset_adapter',
+        # NumPy internals (needed by apptools persistence)
+        'numpy.core.multiarray',
+        'numpy.core._multiarray_umath',
         # PyQt5
         'PyQt5',
         'PyQt5.QtCore',
