@@ -7,6 +7,7 @@ a = Analysis(
     binaries=[],
     datas=[],
     hiddenimports=[
+        # Local modules
         'topomesh',
         'plython',
         'DNE',
@@ -15,6 +16,27 @@ a = Analysis(
         'implicitfair',
         'normcore',
         'render',
+        # TraitsUI Qt toolkit
+        'traitsui.qt',
+        'traitsui.qt.api',
+        'pyface.qt',
+        'pyface.qt.api',
+        'pyface.ui.qt',
+        'pyface.ui.qt.api',
+        # Mayavi
+        'mayavi',
+        'mayavi.core.ui.api',
+        'tvtk.pyface.scene_editor',
+        'tvtk.pyface.api',
+        'tvtk.api',
+        # VTK
+        'vtkmodules',
+        'vtkmodules.all',
+        # PyQt5
+        'PyQt5',
+        'PyQt5.QtCore',
+        'PyQt5.QtGui',
+        'PyQt5.QtWidgets',
     ],
     hookspath=[],
     hooksconfig={},
