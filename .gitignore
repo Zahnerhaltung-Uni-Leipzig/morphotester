@@ -29,3 +29,8 @@ Thumbs.db
 # pyc Files #
 #############
 *.pyc
+
+# PyInstaller #
+###############
+build/
+dist/
