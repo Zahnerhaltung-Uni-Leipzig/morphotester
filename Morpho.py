@@ -196,19 +196,28 @@ class MainWidget(QtWidgets.QWidget):
            
     def ProcessSurface(self):
         """Method for processing surface mesh data to acquire topographic variables."""
+        import traceback
         
-        if self.dnecheck.isChecked():
-            self.TopoMesh.GenerateDNE(self.DNEOptionsWindow.fairvgroup.isChecked(), 
-                                      self.DNEOptionsWindow.dneiteration.text(), self.DNEOptionsWindow.dnestepsize.text(), 
-                                      self.DNEOptionsWindow.dneconditioncontrolcheck.isChecked(), 
-                                      self.DNEOptionsWindow.outliervgroup.isChecked(), self.DNEOptionsWindow.dneoutlierval.text(), 
-                                      self.DNEOptionsWindow.dneoutliertype1.isChecked(), self.filename)
-                        
-        if self.rficheck.isChecked():
-            self.TopoMesh.GenerateRFI()
-            
-        if self.opcrcheck.isChecked():
-            self.TopoMesh.GenerateOPCR(self.OPCROptionsWindow.opcrminpatch.text())
+        try:
+            if self.dnecheck.isChecked():
+                self.TopoMesh.GenerateDNE(self.DNEOptionsWindow.fairvgroup.isChecked(), 
+                                          self.DNEOptionsWindow.dneiteration.text(), self.DNEOptionsWindow.dnestepsize.text(), 
+                                          self.DNEOptionsWindow.dneconditioncontrolcheck.isChecked(), 
+                                          self.DNEOptionsWindow.outliervgroup.isChecked(), self.DNEOptionsWindow.dneoutlierval.text(), 
+                                          self.DNEOptionsWindow.dneoutliertype1.isChecked(), self.filename)
+                            
+            if self.rficheck.isChecked():
+                self.TopoMesh.GenerateRFI()
+                
+            if self.opcrcheck.isChecked():
+                self.TopoMesh.GenerateOPCR(self.OPCROptionsWindow.opcrminpatch.text())
+        except Exception as e:
+            print(f"\n*** ERROR during processing ***")
+            print(f"Exception type: {type(e).__name__}")
+            print(f"Exception message: {e}")
+            print(f"Full traceback:")
+            traceback.print_exc()
+            raise
         
     def CalcFile(self):
         """Method for processing a single surface mesh object. 
