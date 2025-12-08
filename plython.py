@@ -101,7 +101,7 @@ class PlythonMesh(object):
         if flist[0][0] != '3':
             raise ValueError('Non-triangular polygons found within .PLY file.')
         
-        varray = array([vertices.split() for vertices in vlist], float)
+        varray = array([vertices.split()[:3] for vertices in vlist], float)
         farray = array([vertices.split()[1:4] for vertices in flist], int)
         vfarray = array([[varray[vindex] for vindex in vertices] for vertices in farray], float)
         
