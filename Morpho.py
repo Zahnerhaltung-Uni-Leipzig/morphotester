@@ -13,7 +13,29 @@ os.environ['ETS_TOOLKIT'] = 'qt'
 os.environ['QT_API'] = 'pyqt5'
 
 import sys
+import traceback
 import topomesh
+
+# Global exception hook to catch unhandled exceptions
+def exception_hook(exctype, value, tb):
+    print("\n" + "="*60)
+    print("UNHANDLED EXCEPTION CAUGHT BY GLOBAL HOOK")
+    print("="*60)
+    print(f"Exception Type: {exctype.__name__}")
+    print(f"Exception Value: {value}")
+    print("\nFull Traceback:")
+    traceback.print_exception(exctype, value, tb)
+    print("="*60 + "\n")
+    # Also write to a log file for persistence
+    with open('morpho_error.log', 'a') as f:
+        f.write("\n" + "="*60 + "\n")
+        f.write(f"Exception Type: {exctype.__name__}\n")
+        f.write(f"Exception Value: {value}\n")
+        f.write("Full Traceback:\n")
+        traceback.print_exception(exctype, value, tb, file=f)
+        f.write("="*60 + "\n")
+
+sys.excepthook = exception_hook
 
 from math import log
 from numpy import array, amax, amin, rint, empty, nan, isfinite
@@ -212,10 +234,28 @@ class MainWidget(QtWidgets.QWidget):
     def CalcFile(self):
         """Method for processing a single surface mesh object. 
         
-        Connected to Process File Button."""     
-        if not self.dnecheck.isChecked() and not self.rficheck.isChecked() and not self.opcrcheck.isChecked():
-            print("No topographic variables have been selected for analysis.")    
-        self.ProcessSurface()
+        Connected to Process File Button."""
+        print("\n[DEBUG] CalcFile started")
+        try:
+            # Check if file was loaded
+            if not hasattr(self, 'TopoMesh'):
+                print("[ERROR] No file loaded! Please open a PLY file first.")
+                return
+            print(f"[DEBUG] TopoMesh exists, mesh type: {type(self.TopoMesh.mesh)}")
+            
+            if not self.dnecheck.isChecked() and not self.rficheck.isChecked() and not self.opcrcheck.isChecked():
+                print("No topographic variables have been selected for analysis.")    
+            
+            print("[DEBUG] Calling ProcessSurface...")
+            self.ProcessSurface()
+            print("[DEBUG] ProcessSurface completed")
+        except Exception as e:
+            print(f"\n[ERROR] Exception in CalcFile:")
+            print(f"  Type: {type(e).__name__}")
+            print(f"  Message: {e}")
+            print("  Full traceback:")
+            traceback.print_exc()
+            return
         
         if self.dnecheck.isChecked():
             print("\nDNE calculation details:")
