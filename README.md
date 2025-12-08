@@ -171,3 +171,4 @@ This version updates MorphoTester from Python 2.x to Python 3.12 with the follow
 - **Dependencies:** Updated all dependencies to Python 3 compatible versions (NumPy, SciPy, Matplotlib, Pillow, Traits, TraitsUI, Mayavi, VTK)
 - **Environment file:** Added `environment.yml` for easy conda environment setup
 - **Build configuration:** Added `Morpho.spec` PyInstaller spec file for building standalone executables
+- **PLY file compatibility:** Fixed ASCII PLY loading to only read the first 3 vertex columns (x, y, z). PLY files with additional vertex properties (e.g., color, normals, alpha) are now supported — extra channels are automatically filtered out
